@@ -1,0 +1,6 @@
+huggingface_hub==0.33.2
+sentencepiece==0.2.0
+protobuf==6.31.1
+transformers==4.53.1
+accelerate==1.8.1
+git+https://github.com/Abhinay1997/diffusers@425a715e35479338c06b2a68eb3a95790c1db3c5
