@@ -108,3 +108,59 @@ image_dpm = pipe(
     num_inference_steps=20,
 ).images[0]
 ```
+```python
+import torch
+from pipeline_qwenimage_dpm import QwenImagePipeline
+from diffusers.schedulers import DPMSolverMultistepScheduler
+
+pipe = QwenImagePipeline.from_pretrained("Qwen/Qwen-Image", torch_dtype=torch.bfloat16)
+pipe.to('cuda')
+
+euler_scheduler = pipe.scheduler
+dpm_scheduler = DPMSolverMultistepScheduler.from_pretrained('Efficient-Large-Model/SANA1.5_1.6B_1024px_diffusers', subfolder='scheduler')
+prompt = """A cozy bookstore window on a charming street, framed with lush greenery—vibrant ivy cascading around the edges and potted ferns spilling onto the sidewalk. The window’s glass catches the warm, golden glow of late afternoon sunlight, casting soft reflections of the surrounding street, including faint outlines of passing clouds and nearby trees. Inside, two bestselling books are prominently displayed on a velvet-lined shelf: “The Night Circus” by Erin Morgenstern, its cover featuring a striking black-and-white circus tent under a starry sky with a bold red scarf swirling across it, and “Where the Crawdads Sing” by Delia Owens, showcasing a serene marsh landscape with a lone canoe and a vibrant sunset in hues of orange and pink. The books are angled to catch the light, their glossy covers glinting subtly. Outside, a fluffy tabby cat with amber eyes sits on the cobblestone street, delicately licking its paw, while a monarch butterfly with vivid orange and black wings flutters past, catching the light. A man in a tweed jacket stands in front of the window, gazing intently at the books, his face etched with deep thought, his reflection faintly visible in the glass. The scene is bathed in a mix of warm sunlight and cool shadows, with the bookstore’s interior glowing softly from within, creating a layered interplay of light and reflection on the window."""
+
+positive_magic = {
+    "en": "Ultra HD, 4K, cinematic composition.", # for english prompt,
+    "zh": "超清，4K，电影级构图" # for chinese prompt,
+}
+
+# Generate image
+negative_prompt = " "
+
+
+# Generate with different aspect ratios
+aspect_ratios = {
+    "1:1": (1328, 1328),
+    "16:9": (1664, 928),
+    "9:16": (928, 1664),
+    "4:3": (1472, 1140),
+    "3:4": (1140, 1472)
+}
+
+width, height = aspect_ratios["4:3"]
+
+pipe.scheduler = euler_scheduler
+image = pipe(
+    prompt=prompt + positive_magic["en"],
+    negative_prompt=negative_prompt,
+    width=width,
+    height=height,
+    num_inference_steps=50,
+    true_cfg_scale=4.0,
+    generator=torch.Generator(device="cuda").manual_seed(42),
+).images[0]
+image.save("example.jpg")
+
+pipe.scheduler = dpm_scheduler
+image = pipe(
+    prompt=prompt + positive_magic["en"],
+    negative_prompt=negative_prompt,
+    width=width,
+    height=height,
+    num_inference_steps=28,
+    true_cfg_scale=4.0,
+    generator=torch.Generator(device="cuda").manual_seed(42)
+).images[0]
+image.save("example_dpm.png")
+```
