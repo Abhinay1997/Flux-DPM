@@ -164,3 +164,41 @@ image = pipe(
 ).images[0]
 image.save("example_dpm.png")
 ```
+
+if you find this useful, consider citing as:
+```
+@misc{flux-dpm,
+    author={Naga Sai Abhinay Devarinti},
+    title={Flux-DPM},
+    year={2025},
+    howpublished={\url{https://github.com/Abhinay1997/Flux-DPM}},
+}
+```
+Citations:
+```
+@misc{von-platen-etal-2022-diffusers,
+  author = {Patrick von Platen and Suraj Patil and Anton Lozhkov and Pedro Cuenca and Nathan Lambert and Kashif Rasul and Mishig Davaadorj and Dhruv Nair and Sayak Paul and William Berman and Yiyi Xu and Steven Liu and Thomas Wolf},
+  title = {Diffusers: State-of-the-art diffusion models},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/huggingface/diffusers}}
+}
+
+@misc{flux2024,
+    author={Black Forest Labs},
+    title={FLUX},
+    year={2024},
+    howpublished={\url{https://github.com/black-forest-labs/flux}},
+}
+
+@misc{xie2025sana,
+      title={SANA 1.5: Efficient Scaling of Training-Time and Inference-Time Compute in Linear Diffusion Transformer},
+      author={Xie, Enze and Chen, Junsong and Zhao, Yuyang and Yu, Jincheng and Zhu, Ligeng and Lin, Yujun and Zhang, Zhekai and Li, Muyang and Chen, Junyu and Cai, Han and others},
+      year={2025},
+      eprint={2501.18427},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2501.18427},
+    }
+```
